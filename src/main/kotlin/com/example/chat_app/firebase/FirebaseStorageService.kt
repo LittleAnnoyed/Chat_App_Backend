@@ -38,9 +38,16 @@ class FirebaseStorageService {
         val blobInfo = BlobInfo.newBuilder(blobId).setMetadata(map).setContentType(".png").build()
 
         storage.create(blobInfo, multipartFile.bytes)
+
+        return createDownloadUrl(filename);
     }
 
     private fun generateFileName(file: MultipartFile): String {
         return " ${Date().time}_${file.name.replace(" ", "_")}"
+    }
+
+    private fun createDownloadUrl(filename: String): String {
+        val baseUrl = "https://firebasestorage.googleapis.com/v0/b/chat-b62d0.appspot.com"
+        return "${baseUrl}/o/${filename}?alt=media&token=${filename}"
     }
 }
