@@ -1,6 +1,6 @@
 package com.example.chat_app.firebase
 
-import com.example.chat_app.converter.toFile
+
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
@@ -24,11 +24,9 @@ class FirebaseStorageService {
     private lateinit var storage: Storage
 
 
-    fun uploadFileToFirebaseStorage(multipartFile: MultipartFile) : String {
+    fun uploadFileToFirebaseStorage(multipartFile: MultipartFile): String {
 
-        val file = multipartFile.toFile()
-        val pathFile = file.path
-        val filename = generateFileName(file)
+        val filename = generateFileName(multipartFile)
 
         val bucket = StorageClient.getInstance(firebaseApp).bucket()
         val bucketName = bucket.name
@@ -36,13 +34,13 @@ class FirebaseStorageService {
         val map = HashMap<String, String>()
         map["firebaseStorageDownloadTokens"] = filename
 
-        val blobId = BlobId.of(bucketName,filename)
+        val blobId = BlobId.of(bucketName, filename)
         val blobInfo = BlobInfo.newBuilder(blobId).setMetadata(map).setContentType(".png").build()
 
-        storage.create(blobInfo,file.readBytes())
+        storage.create(blobInfo, multipartFile.bytes)
     }
 
-    private fun generateFileName(file: File): String {
-        return " ${Date().time}_${file.name.replace(" ","_")}"
+    private fun generateFileName(file: MultipartFile): String {
+        return " ${Date().time}_${file.name.replace(" ", "_")}"
     }
 }
