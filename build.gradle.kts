@@ -31,6 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.google.firebase:firebase-admin:9.1.1")
     implementation("com.auth0:java-jwt:4.4.0")
 
     compileOnly("org.projectlombok:lombok")
