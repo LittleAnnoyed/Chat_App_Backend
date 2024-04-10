@@ -1,6 +1,8 @@
 package com.example.chat_app
 
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -27,4 +29,14 @@ fun firebaseApp(): FirebaseApp {
 		.build()
 	val firebaseApp = FirebaseApp.initializeApp(options,"appName");
 	return firebaseApp
+}
+
+@Bean
+fun initializeStorage() : Storage {
+
+	val serviceAccount = FileInputStream("src/main/resources/static/account_key.json")
+	val storageOptions = StorageOptions.newBuilder()
+		.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+		.build()
+	return storageOptions.service
 }
