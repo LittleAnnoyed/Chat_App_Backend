@@ -5,6 +5,8 @@ import com.google.firebase.FirebaseApp
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
+import java.util.Date
 
 
 @Service
@@ -18,6 +20,12 @@ class FirebaseStorageService {
     fun uploadFileToFirebaseStorage(multipartFile: MultipartFile) : String {
 
         val file = multipartFile.toFile()
+        val pathFile = file.path
+        val filename = generateFileName(file)
 
+    }
+
+    private fun generateFileName(file: File): String {
+        return " ${Date().time}_${file.name.replace(" ","_")}"
     }
 }
