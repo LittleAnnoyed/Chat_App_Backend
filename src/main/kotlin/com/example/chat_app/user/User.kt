@@ -15,6 +15,8 @@ data class User(
     val login: String,
     val password: String,
     val role: UserRole,
+    var username: String? = null,
+    var photoUrl: String? = null
 ): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
