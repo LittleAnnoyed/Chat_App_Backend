@@ -4,6 +4,9 @@ import com.example.chat_app.firebase.FirebaseStorageService
 import com.google.cloud.storage.Storage
 import com.google.firebase.FirebaseApp
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -11,12 +14,6 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 class UserService {
 
-
-    @Autowired
-    private lateinit var firebaseApp: FirebaseApp
-
-    @Autowired
-    private lateinit var storage: Storage
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -32,4 +29,9 @@ class UserService {
         userRepository.updateUser(user)
     }
 
+    public fun loadUsers(page: Int, pageSize: Int): List<User> {
+        val pageable: Pageable = PageRequest.of(page - 1, pageSize, Sort.by("username").ascending())
+        val users: List<User> = userRepository.findAllUsers(pageable)
+        return users
+    }
 }
